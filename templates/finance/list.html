@@ -1,0 +1,172 @@
+
+{% load humanize %}
+
+<div class="balance_form_area">
+    <h2><i class="fas fa-pen"></i>収支入力フォーム</h2>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <select class="form-control" name="category">
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}({% if category.income %}収入{% else %}支出{% endif %})</option>
+            {% endfor %}
+        </select>
+        <div class="form-row my-2">
+            <div class="col-sm-6">
+                <label>決済日</label>
+                <input class="form-control" type="text" name="pay_date" readonly placeholder="決済日を入力してください">
+            </div>
+            <div class="col-sm-6">
+                <label>金額</label>
+                <input class="form-control" type="number" name="value" value="0">
+            </div>
+        </div>
+        <input class="btn btn-primary form-control" type="submit" value="保存">
+    </form>
+</div>
+
+
+<div class='tabs'>
+    <div class='tab-buttons'>
+        <span class='content1 tab_selected'>月収支一覧</span>
+        <span class='content2'>カテゴリ追加</span>
+        <span class='content3'>登録カテゴリ</span>
+        <span class='content4'>カテゴリ別</span>
+        <span class='content5'><i class="fas fa-chart-pie"></i>今月の収支</span>
+        <span class='content6'><i class="far fa-chart-bar"></i>今年の収支</span>
+        <div id='lamp' class='content1'></div>
+    </div>
+    <div class='tab-content'>   
+        <div class='content1'>
+            <table class="table table-striped table-bordered my-1">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center">決済日</th>
+                        <th class="text-center">登録日時</th>
+                        <th class="text-center">カテゴリ</th>
+                        <th class="text-center">金額</th>
+                        <th class="text-center">削除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for balance in balances %}
+                    <tr>
+                        <td class="text-center">{{ balance.pay_date|date:"j日" }}</td>
+                        <td class="text-center">{{ balance.dt }}</td>
+                        <td class="text-center">{{ balance.category.name }}</td>
+                        <td class="text-right" style="{% if balance.income %}color:blue;{% else %}color:crimzon;{% endif %}">{{ balance.value|intcomma }}円</td>
+                        <td class="text-center">
+                            <form action="{% url 'finance:balance_delete' balance.id %}" method="POST" onsubmit="if(confirm('本当に削除しますか？')){ return true } else { return false };">
+                                {% csrf_token %}
+                                <input style="aline-items:center;" class="btn btn-outline-danger text-center" type="submit" value="削除">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class='content2'>
+            <div class="category_form_area">
+                {% comment %} <h3 class="text-center"><i class="far fa-list-alt"></i>カテゴリ追加フォーム</h3> {% endcomment %}
+            
+                <form action="{% url 'finance:category' %}" method="POST">
+                    {% csrf_token %}
+            
+                    <div class="row">
+                        <div class="col"><input class="form-control category_name" type="text" name="name" placeholder="カテゴリ名"></div>
+                        <div class="col"><input id="income_chk" class="income_chk" type="checkbox" name="income"><label class="income_chk_label" for="income_chk"></label></div>
+                    </div>
+            
+                    <input class="btn btn-primary form-control" type="submit" value="追加">
+                </form>
+            </div>
+        </div>
+      
+        <div class='content3'>
+            <div class="category_view_area">
+                <div class="category_list_area">
+                    <div class="category_list_header">
+                        <div class="category_list_header_content">カテゴリ名</div>
+                        <div class="category_list_header_content">収支</div>
+                        <div class="category_list_header_content">編集/削除</div>
+                    </div>
+            
+                    {% for category in categories %}
+                    <div>
+            
+                        <input id="category_chk_{{ category.id }}" class="category_chk" type="checkbox">
+                        <div class="category_list_view">
+                            <div class="category_list_view_content category_list_view_content_name">{{ category.name }}</div>
+                            <div class="category_list_view_content">
+                                {% if category.income %}
+                                <span class="category_list_view_content_income">収入</span>{% else %}
+                                <span class="category_list_view_content_spending">支出</span>
+                                {% endif %}
+                            </div>
+                            <div class="category_list_view_content">
+                                <label class="category_chk_label category_chk_label_start" for="category_chk_{{ category.id }}">編集</label>
+                            
+                                <form action="{% url 'finance:category_delete' category.id %}" method="POST" onsubmit="if(confirm('カテゴリを削除しますか？\n\n【注意】カテゴリに紐付けられている全収支データも削除されます！')){ return true } else { return false };" style="display:inline-block;">
+                                    {% csrf_token %}
+                                    <input class="category_chk_label category_chk_label_cancel" type="submit" value="削除">
+                                </form>
+            
+                            </div>
+                        </div>
+                        <form class="category_list_edit" action="{% url 'finance:category_edit' category.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="category_list_edit_content"><input class="form-control" type="text" name="name" value="{{ category.name }}"></div>
+                            <div class="category_list_edit_content">
+                                <input id="income_chk_{{ category.id }}" class="income_chk" type="checkbox" name="income" {% if category.income %}checked{% endif %}><label class="income_chk_label" for="income_chk_{{ category.id }}"></label>
+                            </div>
+                            <div class="category_list_edit_content">
+                                <input class="category_edit_submit" type="submit" value="編集する">
+                                <label class="category_chk_label category_chk_label_cancel" for="category_chk_{{ category.id }}">キャンセル</label>
+                            </div>
+                        </form>
+                    
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class='content4'>
+            <table class="table table-striped table-bordered my-1">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center">カテゴリ</th>
+                        <th class="text-center">合計(月)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--カテゴリごとの集計結果-->
+                    {% for c in category_of_balances %}
+                    <tr>
+                        <td class="text-center {% if c.income %}income_{% else %}spending_{% endif %}category">{{ c.category }}</td>
+                        <td class="{% if c.income %}income_{% else %}spending_{% endif %}total text-right">{{ c.total|intcomma }}円</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+      
+        <div class='content5'>
+            <div class="row">
+                <div style="position:relative;width:50%;">
+                    <canvas id="category_graph_income"></canvas>
+                </div>
+                <div style="position:relative;width:50%;">
+                    <canvas id="category_graph_spending"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class='content6'>
+            <div class="row">
+                <div style="position:relative">
+                    <canvas id="month_list_graph"></canvas>
+                </div>
+            </div>
+        </div>  
+</div>

@@ -1,0 +1,65 @@
+
+
+{% load static %}
+{% load humanize %}
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>家計簿</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!--日本語化用JS-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+
+    <!--jQueryの読み込み-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!--chart.js CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js"></script>
+    <script src="{% static 'finance/js/chart.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'finance/css/style.css' %}">
+    <script src="{% static 'finance/js/script.js' %}"></script>
+
+</head>
+<body>
+    
+    <!--ここに家計簿のタイトルを-->
+    <header class="header_area">
+        <a class="header_link" href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i><div class="logout">logout</div></a>
+        <h1 class="header_title" ><i class="far fa-calendar-alt"></i> 家計簿アプリ</h1>
+    </header>
+    
+     <!--
+        Djangoメッセージフレームワーク
+        https://docs.djangoproject.com/en/3.2/ref/contrib/messages/#using-messages-in-views-and-templates
+    -->
+
+    {% for message in messages %}
+    <div class="message message_{{ message.tags }}">
+        <div class="message_content">{{ message }}</div>       
+        <div class="message_delete"><i class="fas fa-times"></i></div>
+    </div>
+    {% endfor %}
+
+
+    <div class="row mx-0">
+        <div class="col-md-6">{% include "finance/calender.html" %}</div>
+        <div class="col-md-6">{% include "finance/list.html" %}</div>
+    </div>
+
+</body>
+
+</html>

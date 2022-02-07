@@ -1,0 +1,442 @@
+body {
+    font-family: "Yu Gothic UI","ヒラギノ丸ゴ ProN W4";
+    padding:0;
+    margin:0;
+    background:#fff;
+}
+
+
+/* top area */
+.logout {
+    position: absolute;
+    color: white;
+    font-size: 0.5rem;
+    margin-left: 1rem;
+}
+.header_area {
+    display:flex;
+    background:darkturquoise;
+}
+.header_link{
+    display:block;
+    width:3rem;
+    position:relative;
+}
+.header_link:hover i, .header_link:hover .logout {
+    color:crimson;
+    transition: 0.3s;
+}
+
+.header_link i {
+    color:white;
+    position:absolute;
+    font-size:2rem;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    margin-left: 0.5rem;
+}
+.header_title{
+    width:calc(100% - 3rem );
+    margin-left:2rem;
+}
+
+/* message area */
+.message{
+    width: fit-content;
+    color:white;
+    padding:1rem;
+    margin:1rem auto;
+    border-radius:0.5rem;
+    box-shadow:3px 3px 2px gray;
+    display:flex;
+}
+.message_success{
+    background:forestgreen;
+}
+.message_error{
+    background:crimson;
+}
+.message_content {
+    width:calc(100% - 2rem);
+    font-size:1.25rem;
+}
+.message_delete {
+    cursor:pointer;
+    width:2rem;
+    transition:0.2s;
+}
+.message_delete i{
+    display: flex;
+    justify-content:center;
+    font-size:1.25rem;
+    margin-top: 0.35rem;
+}
+.message_delete:hover{
+    color:black;
+    transition:0.2s;
+}
+
+/*free money area*/
+.free{
+    display: inline-block;
+    text-align: center;
+}
+.free-money{
+    display: inline-flex;
+    background-color: rgba(75, 204, 255, 0.815);
+    border-radius: 0.1rem;
+    margin: 0 1rem;
+    padding: 0.1rem 1rem;
+    box-shadow: 2px 2px 2px gray;
+}
+.free-money i{
+    margin: auto;
+}
+.hide-visible{
+    background: none;
+	border: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+    font-size: 0.8rem;
+}
+
+
+/* calender area */
+.form-row {
+    display: flex;
+    text-align: center;
+}
+
+.calender {
+    text-align:center;
+    font-size:1.5rem;
+    border:solid 0.2rem black;
+    border-radius: 2rem;
+    /* カレンダーを中央に配置。 */
+    margin:0.5rem auto 0;
+    width:100%;
+}
+.calender td{ 
+    padding:0.25rem;
+    border:solid 0.1rem black;
+}
+.calender td:nth-child(1) {
+    color:crimson;
+}
+.calender td:nth-child(7) {
+    color:royalblue;
+}
+.calender_head {
+    font-weight:bold;
+    border-bottom:double 0.2rem black;
+}
+.calender td{ 
+    width:calc(100%/7);
+}
+
+.day_detail{
+    font-size:1.1rem;
+    height:calc(1.1rem + 13.2px);
+}
+
+.day_cell_small{
+    display:flex;
+}
+.day_cell_small_inner{
+    width:50%;
+}
+.day_detail_mark{
+    display:none;
+}
+.day_detail_mark_spending{ background:red; }
+.day_detail_mark_income{ background:blue; }
+@media (max-width:800px){
+    .day_detail{
+        display:none;
+    }
+    .day_detail_mark{
+        display:block;
+        padding:0.5rem;
+        margin:0.5rem;
+    }
+}
+.year_month_select {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+.day_cell div:first-child {
+    text-align: left;
+    font-size: 1rem;
+}
+.day_cell div:nth-child(2) {
+    color: blue;
+}
+.day_cell div:last-child{
+    color: red;
+}
+.calender_month_link {
+    padding:0 0.5rem;
+    font-size:1.5rem;
+}
+.month_balance{
+    display: flex;
+    text-align: center;
+    border:0.5rem solid skyblue;
+    margin-top: 1rem;
+}
+.month_balance_result{
+    margin: 1rem auto;
+    font-size: 1.2rem;
+}
+
+
+/* category form area */
+.category_form_area {
+    margin:0.5em 0;
+    border-radius:0.5rem;
+}
+.category_form_area h2{
+    margin-bottom: 1rem;
+}
+
+/* balance form area */
+.balance_form_area {
+    background: #eee;
+    padding:1rem;
+    margin:1rem 0;
+    border-radius:0.5rem;
+    box-shadow: 2px 2px 3px gray;
+}
+
+
+
+/* income flag chkbox */
+.income_chk {
+    display:none;
+}
+.income_chk_label {
+    display:inline-block;
+    position:relative;
+    width:6rem;
+    height:2rem;
+    margin:0.25rem;
+    background:#444;
+    transition:0.2s;
+    cursor:pointer;
+}
+.income_chk_label:before {
+    content:"支出";
+    font-weight:bold;
+    color:white;
+    position:absolute;
+    top:0;
+    left:0;
+    width:50%;
+    height:100%;
+    background:crimson;
+    transition:0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input[type="checkbox"].income_chk:checked + label.income_chk_label:before{
+    content:"収入";
+    font-weight:bold;
+    left:50%;
+    background:forestgreen;
+}
+
+
+/*category view area*/
+.category_view_area {
+    /* background-color: rgb(233, 247, 107); */
+    border-radius:0.5rem;
+    padding:1rem;
+    margin:1rem 0;
+}
+.category_view_area label {
+    margin:0;
+}
+
+.category_list_area {
+    height:20rem;
+    overflow:auto;
+    
+}
+.category_list_header {
+    
+    display:flex;
+    background:#eee;
+    font-weight:bold;
+    font-size:1.2rem;
+    border-bottom:solid 0.2rem black; 
+    padding:0.5rem 0;
+    
+    position:sticky;
+    top:0;
+
+}
+.category_list_header_content {
+    text-align:center;
+    width:calc(100%/3);
+}
+
+.category_chk{
+    display:none;
+}
+.category_list_view{
+    display:flex;
+    border-bottom:solid 0.1rem gray; 
+    align-items: center;
+    justify-content: center;
+    padding:0.5rem 0;
+}
+.category_list_view_content {
+
+    text-align:center;
+    width:calc(100%/3);
+}
+.category_list_view_content_name {
+    font-size:1.1rem;
+}
+.category_list_view_content_income { color:white;padding:0.25rem 1rem;border-radius:0.5rem;background:forestgreen; }
+.category_list_view_content_spending { color:white;padding:0.25rem 1rem;border-radius:0.5rem;background:crimson; }
+
+.category_list_edit{
+    display:none;
+    border-bottom:solid 0.1rem gray; 
+    align-items: center;
+    justify-content: center;
+    padding:0.5rem 0;
+}
+.category_list_edit_content {
+    text-align:center;
+    width:calc(100%/3);
+}
+
+input[type="checkbox"].category_chk:checked ~ .category_list_edit { display:flex; }
+input[type="checkbox"].category_chk:checked ~ .category_list_view { display:none; }
+
+
+/*編集ボタン*/
+.category_chk_label{ border-radius:0.5rem;padding:0.25rem 0.5rem;cursor:pointer;transition:0.2s;background:transparent; }
+.category_chk_label_start{ border:solid 0.2rem forestgreen; }
+.category_chk_label_cancel{ border:solid 0.2rem crimson; }
+.category_chk_label_start:hover{ background:forestgreen;color:white;transition:0.2s; }
+.category_chk_label_cancel:hover{ background:crimson;color:white;transition:0.2s; }
+
+.category_edit_submit{
+    background:transparent;
+    border-radius:0.5rem;
+    padding:0.25rem 0.5rem;
+    cursor:pointer;
+    border:solid 0.2rem deepskyblue;
+    transition:0.2s;
+}
+.category_edit_submit:hover{
+    color:white;
+    background:deepskyblue;
+    transition:0.2s;
+}
+
+
+.category_of_balances { 
+    flex-flow: column;
+}
+
+/* tab system area */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+.tabs{
+    width:100%;
+    margin:1rem auto;
+    position:relative;
+}
+.tab-buttons span{
+    font:400 1rem 'open sans',sans-serif;
+    color:#333;
+    background:#eee;
+    cursor:pointer;
+    border-bottom:2px solid #ddd;
+    border-right: 2px solid #ddd;
+    display:block;
+    width:calc(100%/3);
+    float:left;
+    text-align:center;
+    height: 2.5rem;
+    line-height:3rem;
+}
+.tab-buttons span:hover{
+    background-color: lightgray;
+    transition: 0.3s;
+}
+/*
+.tab_selected {
+    background-color:gray !important;
+}
+*/
+.tab-content{
+    width: 100%;
+    border-bottom:3px solid #ddd;
+    padding:1rem;
+    background:#eee;
+    display:inline-block;
+    font:400 13px 'open sans',sans-serif;
+    color:#333;
+    align-items: center;
+}
+/* #lamp{
+    width:calc(100%/3);
+    height:2px;
+    background:#333;
+    display:block;
+    position:absolute;
+    top:40px;
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+} */
+#lamp.content2{
+    left:calc(100%/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+}
+#lamp.content3{
+    left:calc(100%*2/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+}
+#lamp.content4{
+    left:0%;
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+}
+#lamp.content5{
+    left:calc(100%/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+}
+#lamp.content6{
+    left:calc(100%*2/3);
+    transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    -moz-transition: all .2s ease-in;
+}
+#lamp.content1{
+  left:0;
+  transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  -moz-transition: all .2s ease-in;
+}

@@ -1,0 +1,90 @@
+
+{% load humanize %}
+<!--カレンダー-->
+<div class="mx-5 year_month_select">
+    <form action="" method="GET">
+        <div class="d-flex p-1 bd-highlight" >
+
+            <a class="calender_month_link" href="{{ prev_month }}"><i class="fas fa-chevron-left"></i></a>
+
+            <select class="mr-3 custom-select" name="year">
+                {% for y in year_list %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+                    
+            <select class="mr-3 custom-select"  name="month">
+                <option value="1"  {% if month == 1 %}selected{% endif %}>1</option>
+                <option value="2"  {% if month == 2 %}selected{% endif %}>2</option>
+                <option value="3"  {% if month == 3 %}selected{% endif %}>3</option>
+                <option value="4"  {% if month == 4 %}selected{% endif %}>4</option>
+                <option value="5"  {% if month == 5 %}selected{% endif %}>5</option>
+                <option value="6"  {% if month == 6 %}selected{% endif %}>6</option>
+                <option value="7"  {% if month == 7 %}selected{% endif %}>7</option>
+                <option value="8"  {% if month == 8 %}selected{% endif %}>8</option>
+                <option value="9"  {% if month == 9 %}selected{% endif %}>9</option>
+                <option value="10" {% if month == 10 %}selected{% endif %}>10</option>
+                <option value="11" {% if month == 11 %}selected{% endif %}>11</option>
+                <option value="12" {% if month == 12 %}selected{% endif %}>12</option>
+            </select>
+        
+            <input class="btn btn-success" type="submit" value="検索">
+
+            <a class="calender_month_link" href="{{ next_month }}"><i class="fas fa-chevron-right"></i></a>
+
+        </div>
+    </form>
+
+    <div class="free">
+        <div class="text-center free-money "><i class="fas fa-hand-holding-usd"></i>自由に使えるお金:<div id="free">{{ all_sum|default:"0"|intcomma }}</div>円</div>
+        <input class="btn-outline-info hide-visible visible" type="button" value="表示"  onclick="document.getElementById('free').style.visibility = 'visible';">
+        <input class="btn-outline-info hide-visible hide" type="button" value="非表示" onclick="document.getElementById('free').style.visibility = 'hidden';">
+    </div>
+</div>
+
+
+
+
+<div class="table-responsive">
+    <table class="calender " style="border-radius: 2rem;">
+        <thead>
+            <tr class="calender_head">
+                <td>日</td>
+                <td>月</td>
+                <td>火</td>
+                <td>水</td>
+                <td>木</td>
+                <td>金</td>
+                <td>土</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for week_date in month_date %}
+            <tr>
+                {% for day in week_date %}
+                <td>
+                    <div class="day_cell">
+                        <div>{{ day.day }}</div>
+                        <!--chart.jsで読み取れるよう。ここに収支を意味するクラス名をセット-->
+                        <div class="day_detail">{{ day.income|default:""|intcomma   }}</div>
+                        <div class="day_detail">{{ day.spending|default:""|intcomma }}</div>
+                    </div>
+                    <!--TODO:収入と支出で色を分ける-->
+                    <div class="day_cell_small">
+                        <div class="day_cell_small_inner"><div class="day_detail_mark {% if day.income   %}day_detail_mark_income{% endif %}"></div>  </div>
+                        <div class="day_cell_small_inner"><div class="day_detail_mark {% if day.spending %}day_detail_mark_spending{% endif %}"></div></div>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<div class="month_balance">
+    <div class="month_balance_result">{{ year }}年{{ month }}月</div>    
+    <div class="month_balance_result">収入:{{ this_month_income|default:"0"|intcomma }}円</div>
+    <div class="month_balance_result">支出:{{ this_month_spending|default:"0"|intcomma }}円</div>
+</div>
